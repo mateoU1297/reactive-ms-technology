@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ms-technology
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/technology_db
+    username: postgres
+    password: postgres
+  flyway:
+    url: jdbc:postgresql://localhost:5432/technology_db
+    user: postgres
+    password: postgres
+    locations: classpath:db/migration
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
