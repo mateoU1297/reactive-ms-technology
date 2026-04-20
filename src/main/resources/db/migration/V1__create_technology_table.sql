@@ -1,4 +1,6 @@
-CREATE TABLE IF NOT EXISTS technology
+CREATE SCHEMA IF NOT EXISTS ms_technology;
+
+CREATE TABLE IF NOT EXISTS ms_technology.technology
 (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE,
