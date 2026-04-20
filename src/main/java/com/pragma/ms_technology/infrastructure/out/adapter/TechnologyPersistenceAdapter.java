@@ -1,0 +1,27 @@
+package com.pragma.ms_technology.infrastructure.out.adapter;
+
+import com.pragma.ms_technology.domain.model.Technology;
+import com.pragma.ms_technology.domain.spi.ITechnologyPersistencePort;
+import com.pragma.ms_technology.infrastructure.out.mapper.ITechnologyEntityMapper;
+import com.pragma.ms_technology.infrastructure.out.repository.TechnologyRepository;
+import lombok.RequiredArgsConstructor;
+import reactor.core.publisher.Mono;
+
+@RequiredArgsConstructor
+public class TechnologyPersistenceAdapter implements ITechnologyPersistencePort {
+
+    private final TechnologyRepository technologyRepository;
+    private final ITechnologyEntityMapper technologyEntityMapper;
+
+    @Override
+    public Mono<Technology> save(Technology technology) {
+        return technologyRepository.save(
+                technologyEntityMapper.toEntity(technology)
+        ).map(technologyEntityMapper::toDomain);
+    }
+
+    @Override
+    public Mono<Boolean> existsByName(String name) {
+        return technologyRepository.existsByName(name);
+    }
+}

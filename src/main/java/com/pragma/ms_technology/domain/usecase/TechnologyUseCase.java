@@ -4,6 +4,7 @@ import com.pragma.ms_technology.domain.api.ITechnologyServicePort;
 import com.pragma.ms_technology.domain.exception.TechnologyAlreadyExistsException;
 import com.pragma.ms_technology.domain.model.Technology;
 import com.pragma.ms_technology.domain.spi.ITechnologyPersistencePort;
+import com.pragma.ms_technology.domain.validator.TechnologyValidator;
 import reactor.core.publisher.Mono;
 
 public class TechnologyUseCase implements ITechnologyServicePort {
@@ -16,7 +17,8 @@ public class TechnologyUseCase implements ITechnologyServicePort {
 
     @Override
     public Mono<Technology> save(Technology technology) {
-        return technologyPersistencePort.existsByName(technology.getName())
+        return TechnologyValidator.validate(technology)
+                .flatMap(t -> technologyPersistencePort.existsByName(t.getName()))
                 .flatMap(exists -> {
                     if (exists)
                         return Mono.error(new TechnologyAlreadyExistsException(technology.getName()));
