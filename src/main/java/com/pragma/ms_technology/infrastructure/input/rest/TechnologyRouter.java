@@ -3,6 +3,8 @@ package com.pragma.ms_technology.infrastructure.input.rest;
 import com.pragma.ms_technology.application.dto.TechnologyRequest;
 import com.pragma.ms_technology.application.dto.TechnologyResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -53,11 +55,31 @@ public class TechnologyRouter {
                                     )
                             }
                     )
+            ),
+            @RouterOperation(
+                    path = "/api/v1/technologies/{id}",
+                    method = RequestMethod.GET,
+                    beanClass = TechnologyRestHandler.class,
+                    beanMethod = "findById",
+                    operation = @Operation(
+                            operationId = "findTechnologyById",
+                            summary = "Find technology by id",
+                            tags = {"Technology"},
+                            parameters = {
+                                    @Parameter(name = "id", in = ParameterIn.PATH, required = true)
+                            },
+                            responses = {
+                                    @ApiResponse(responseCode = "200",
+                                            content = @Content(schema = @Schema(implementation = TechnologyResponse.class))),
+                                    @ApiResponse(responseCode = "404", description = "Technology not found")
+                            }
+                    )
             )
     })
     public RouterFunction<ServerResponse> technologyRoutes(TechnologyRestHandler handler) {
         return RouterFunctions.route()
                 .POST("/api/v1/technologies", handler::save)
+                .GET("/api/v1/technologies/{id}", handler::findById)
                 .build();
     }
 }

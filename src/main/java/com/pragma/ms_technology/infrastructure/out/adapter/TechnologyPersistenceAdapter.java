@@ -24,4 +24,10 @@ public class TechnologyPersistenceAdapter implements ITechnologyPersistencePort 
     public Mono<Boolean> existsByName(String name) {
         return technologyRepository.existsByName(name);
     }
+
+    @Override
+    public Mono<Technology> findById(Long id) {
+        return technologyRepository.findById(id)
+                .map(technologyEntityMapper::toDomain);
+    }
 }

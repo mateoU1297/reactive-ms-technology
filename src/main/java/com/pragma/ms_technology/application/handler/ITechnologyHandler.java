@@ -6,4 +6,6 @@ import reactor.core.publisher.Mono;
 
 public interface ITechnologyHandler {
     Mono<TechnologyResponse> save(TechnologyRequest request);
+
+    Mono<TechnologyResponse> findById(Long id);
 }

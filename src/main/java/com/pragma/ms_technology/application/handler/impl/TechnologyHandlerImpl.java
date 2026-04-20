@@ -21,4 +21,10 @@ public class TechnologyHandlerImpl implements ITechnologyHandler {
         return technologyServicePort.save(technologyMapper.toDomain(request))
                 .map(technologyMapper::toResponse);
     }
+
+    @Override
+    public Mono<TechnologyResponse> findById(Long id) {
+        return technologyServicePort.findById(id)
+                .map(technologyMapper::toResponse);
+    }
 }
