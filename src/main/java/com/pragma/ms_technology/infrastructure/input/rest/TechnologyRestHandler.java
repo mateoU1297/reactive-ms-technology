@@ -36,4 +36,10 @@ public class TechnologyRestHandler {
                 })
                 .flatMap(response -> ServerResponse.status(HttpStatus.CREATED).bodyValue(response));
     }
+
+    public Mono<ServerResponse> findById(ServerRequest request) {
+        Long id = Long.parseLong(request.pathVariable("id"));
+        return technologyHandler.findById(id)
+                .flatMap(response -> ServerResponse.ok().bodyValue(response));
+    }
 }

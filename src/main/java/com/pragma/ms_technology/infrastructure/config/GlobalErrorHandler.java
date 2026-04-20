@@ -2,6 +2,7 @@ package com.pragma.ms_technology.infrastructure.config;
 
 import com.pragma.ms_technology.domain.exception.InvalidFieldException;
 import com.pragma.ms_technology.domain.exception.TechnologyAlreadyExistsException;
+import com.pragma.ms_technology.domain.exception.TechnologyNotFoundException;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
@@ -46,6 +47,9 @@ public class GlobalErrorHandler extends AbstractErrorWebExceptionHandler {
             message = error.getMessage();
         } else if (error instanceof InvalidFieldException) {
             status = HttpStatus.BAD_REQUEST;
+            message = error.getMessage();
+        } else if (error instanceof TechnologyNotFoundException) {
+            status = HttpStatus.NOT_FOUND;
             message = error.getMessage();
         } else {
             status = HttpStatus.INTERNAL_SERVER_ERROR;

@@ -19,14 +19,6 @@ repositories {
 
 tasks.named('test') {
 	useJUnitPlatform()
-
-	// Esto permite que IntelliJ pase patrones de test a Gradle correctamente
-	testLogging {
-		events "passed", "skipped", "failed"
-		showExceptions true
-		showCauses true
-		showStackTraces true
-	}
 }
 
 dependencies {
