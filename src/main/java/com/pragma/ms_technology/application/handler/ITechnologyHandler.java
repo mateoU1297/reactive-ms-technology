@@ -8,4 +8,6 @@ public interface ITechnologyHandler {
     Mono<TechnologyResponse> save(TechnologyRequest request);
 
     Mono<TechnologyResponse> findById(Long id);
+
+    Mono<Void> delete(Long id);
 }

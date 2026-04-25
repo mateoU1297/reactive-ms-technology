@@ -74,12 +74,38 @@ public class TechnologyRouter {
                                     @ApiResponse(responseCode = "404", description = "Technology not found")
                             }
                     )
+            ),
+            @RouterOperation(
+                    path = "/api/v1/technologies/{id}",
+                    method = RequestMethod.DELETE,
+                    beanClass = TechnologyRestHandler.class,
+                    beanMethod = "delete",
+                    operation = @Operation(
+                            operationId = "deleteTechnology",
+                            summary = "Delete a technology",
+                            tags = {"Technology"},
+                            parameters = {
+                                    @Parameter(
+                                            name = "id",
+                                            in = ParameterIn.PATH,
+                                            required = true,
+                                            schema = @Schema(type = "integer", format = "int64")
+                                    )
+                            },
+                            responses = {
+                                    @ApiResponse(responseCode = "204",
+                                            description = "Technology deleted successfully"),
+                                    @ApiResponse(responseCode = "404",
+                                            description = "Technology not found")
+                            }
+                    )
             )
     })
     public RouterFunction<ServerResponse> technologyRoutes(TechnologyRestHandler handler) {
         return RouterFunctions.route()
                 .POST("/api/v1/technologies", handler::save)
                 .GET("/api/v1/technologies/{id}", handler::findById)
+                .DELETE("/api/v1/technologies/{id}", handler::delete)
                 .build();
     }
 }

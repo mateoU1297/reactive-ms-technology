@@ -9,4 +9,8 @@ public interface ITechnologyPersistencePort {
     Mono<Boolean> existsByName(String name);
 
     Mono<Technology> findById(Long id);
+
+    Mono<Void> delete(Long id);
+
+    Mono<Boolean> existsById(Long id);
 }

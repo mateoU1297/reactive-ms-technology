@@ -30,4 +30,14 @@ public class TechnologyPersistenceAdapter implements ITechnologyPersistencePort 
         return technologyRepository.findById(id)
                 .map(technologyEntityMapper::toDomain);
     }
+
+    @Override
+    public Mono<Void> delete(Long id) {
+        return technologyRepository.deleteById(id);
+    }
+
+    @Override
+    public Mono<Boolean> existsById(Long id) {
+        return technologyRepository.existsById(id);
+    }
 }
