@@ -42,4 +42,10 @@ public class TechnologyRestHandler {
         return technologyHandler.findById(id)
                 .flatMap(response -> ServerResponse.ok().bodyValue(response));
     }
+
+    public Mono<ServerResponse> delete(ServerRequest request) {
+        Long id = Long.parseLong(request.pathVariable("id"));
+        return technologyHandler.delete(id)
+                .then(ServerResponse.noContent().build());
+    }
 }

@@ -7,4 +7,6 @@ public interface ITechnologyServicePort {
     Mono<Technology> save(Technology technology);
 
     Mono<Technology> findById(Long id);
+
+    Mono<Void> delete(Long id);
 }

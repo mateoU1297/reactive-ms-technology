@@ -1,6 +1,7 @@
 package com.pragma.ms_technology.domain.usecase;
 
 import com.pragma.ms_technology.domain.exception.TechnologyAlreadyExistsException;
+import com.pragma.ms_technology.domain.exception.TechnologyNotFoundException;
 import com.pragma.ms_technology.domain.model.Technology;
 import com.pragma.ms_technology.domain.spi.ITechnologyPersistencePort;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +31,7 @@ class TechnologyUseCaseTest {
 
     @BeforeEach
     void setUp() {
-        technology = new Technology(null, "Java", "Programming language");
+        technology = new Technology(1L, "Java", "Programming language");
     }
 
     @Test
@@ -61,5 +62,43 @@ class TechnologyUseCaseTest {
                 .verify();
 
         verify(technologyPersistencePort, never()).save(any());
+    }
+
+    @Test
+    void findById_existingTechnology_success() {
+        when(technologyPersistencePort.findById(1L)).thenReturn(Mono.just(technology));
+
+        StepVerifier.create(technologyUseCase.findById(1L))
+                .expectNextMatches(t -> t.getId().equals(1L))
+                .verifyComplete();
+    }
+
+    @Test
+    void findById_notFound_throwsTechnologyNotFound() {
+        when(technologyPersistencePort.findById(1L)).thenReturn(Mono.empty());
+
+        StepVerifier.create(technologyUseCase.findById(1L))
+                .expectError(TechnologyNotFoundException.class)
+                .verify();
+    }
+
+    @Test
+    void delete_existingTechnology_success() {
+        when(technologyPersistencePort.existsById(1L)).thenReturn(Mono.just(true));
+        when(technologyPersistencePort.delete(1L)).thenReturn(Mono.empty());
+
+        StepVerifier.create(technologyUseCase.delete(1L))
+                .verifyComplete();
+    }
+
+    @Test
+    void delete_notFound_throwsTechnologyNotFound() {
+        when(technologyPersistencePort.existsById(1L)).thenReturn(Mono.just(false));
+
+        StepVerifier.create(technologyUseCase.delete(1L))
+                .expectError(TechnologyNotFoundException.class)
+                .verify();
+
+        verify(technologyPersistencePort, never()).delete(any());
     }
 }
